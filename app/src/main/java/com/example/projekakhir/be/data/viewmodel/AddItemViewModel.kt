@@ -40,7 +40,6 @@ class AddItemViewModel(
             try {
                 _uploadState.value = UploadState.Loading
 
-                // 1. Upload Image (pastikan imageUri tidak null)
                 if (imageUri == null) {
                     _uploadState.value = UploadState.Error("Gambar harus dipilih")
                     return@launch
@@ -48,7 +47,11 @@ class AddItemViewModel(
 
                 val imageUrl = repository.uploadImage(imageUri)
 
-                // 2. Buat item
+                val itemStatus = when (jenis) {
+                    "resell" -> "available"
+                    else -> "pending_pickup"
+                }
+
                 val item = ItemModel(
                     namaBarang = nama,
                     harga = harga,
@@ -61,17 +64,13 @@ class AddItemViewModel(
                     jenis = jenis,
                     latitude = lat,
                     longitude = lon,
-                    status = if (jenis == "resell") "available" else "pending_pickup"
+                    status = itemStatus
                 )
 
-                // 3. Upload ke Firestore
                 val result = repository.uploadItem(item)
 
-                if (result.isSuccess) {
-                    _uploadState.value = UploadState.Success
-                } else {
-                    _uploadState.value = UploadState.Error("Gagal upload item")
-                }
+                _uploadState.value = if (result.isSuccess) UploadState.Success
+                else UploadState.Error("Gagal upload item")
 
             } catch (e: Exception) {
                 _uploadState.value = UploadState.Error(e.message ?: "Error tidak diketahui")

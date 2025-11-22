@@ -53,16 +53,12 @@ fun AddItemScreen(
     // Image picker
     val pickImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        imageUri = uri
-    }
+    ) { uri: Uri? -> imageUri = uri }
 
     // Camera launcher
     val takePictureLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
-    ) { success ->
-        if (!success) imageUri = null
-    }
+    ) { success -> if (!success) imageUri = null }
 
     // Location permission
     val locationPermissionLauncher = rememberLauncherForActivityResult(
@@ -100,196 +96,88 @@ fun AddItemScreen(
 
             // PILIH JENIS: RESELL, DONATE, RECYCLE
             Text("Pilih Aksi:", style = MaterialTheme.typography.titleMedium)
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                FilterChip(
-                    selected = selectedJenis == "resell",
-                    onClick = { selectedJenis = "resell" },
-                    label = { Text("Resell") },
-                    modifier = Modifier.weight(1f)
-                )
-                FilterChip(
-                    selected = selectedJenis == "donate",
-                    onClick = { selectedJenis = "donate" },
-                    label = { Text("Donate") },
-                    modifier = Modifier.weight(1f)
-                )
-                FilterChip(
-                    selected = selectedJenis == "recycle",
-                    onClick = { selectedJenis = "recycle" },
-                    label = { Text("Recycle") },
-                    modifier = Modifier.weight(1f)
-                )
+                FilterChip(selected = selectedJenis == "resell", onClick = { selectedJenis = "resell" }, label = { Text("Resell") }, modifier = Modifier.weight(1f))
+                FilterChip(selected = selectedJenis == "donate", onClick = { selectedJenis = "donate" }, label = { Text("Donate") }, modifier = Modifier.weight(1f))
+                FilterChip(selected = selectedJenis == "recycle", onClick = { selectedJenis = "recycle" }, label = { Text("Recycle") }, modifier = Modifier.weight(1f))
             }
 
             Divider(modifier = Modifier.padding(vertical = 8.dp))
 
             // UPLOAD GAMBAR
             Text("Foto Pakaian:", style = MaterialTheme.typography.titleMedium)
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Button(
-                    onClick = { pickImageLauncher.launch("image/*") },
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text("Pilih dari Galeri")
-                }
-                Button(
-                    onClick = {
-                        val uri = createImageUri(context)
-                        imageUri = uri
-                        takePictureLauncher.launch(uri)
-                    },
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text("Ambil Foto")
-                }
+                Button(onClick = { pickImageLauncher.launch("image/*") }, modifier = Modifier.weight(1f)) { Text("Pilih dari Galeri") }
+                Button(onClick = {
+                    val uri = createImageUri(context)
+                    imageUri = uri
+                    takePictureLauncher.launch(uri)
+                }, modifier = Modifier.weight(1f)) { Text("Ambil Foto") }
             }
 
             imageUri?.let { uri ->
-                Image(
-                    painter = rememberAsyncImagePainter(uri),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp),
-                    contentScale = ContentScale.Crop
-                )
+                Image(painter = rememberAsyncImagePainter(uri), contentDescription = null, modifier = Modifier.fillMaxWidth().height(200.dp), contentScale = ContentScale.Crop)
             }
 
             // FORM UNTUK RESELL
             if (selectedJenis == "resell") {
-                OutlinedTextField(
-                    value = nama,
-                    onValueChange = { nama = it },
-                    label = { Text("Nama Pakaian") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                OutlinedTextField(
-                    value = kondisi,
-                    onValueChange = { kondisi = it },
-                    label = { Text("Kondisi (Baru/Bekas/Layak)") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                OutlinedTextField(
-                    value = ukuran,
-                    onValueChange = { ukuran = it },
-                    label = { Text("Ukuran (S/M/L/XL)") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                OutlinedTextField(
-                    value = harga,
-                    onValueChange = { harga = it },
-                    label = { Text("Harga (Rp)") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                OutlinedTextField(
-                    value = kategori,
-                    onValueChange = { kategori = it },
-                    label = { Text("Kategori (Kemeja/Celana/Jaket)") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                OutlinedTextField(
-                    value = deskripsi,
-                    onValueChange = { deskripsi = it },
-                    label = { Text("Deskripsi") },
-                    modifier = Modifier.fillMaxWidth(),
-                    minLines = 3
-                )
+                OutlinedTextField(value = nama, onValueChange = { nama = it }, label = { Text("Nama Pakaian") }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = kondisi, onValueChange = { kondisi = it }, label = { Text("Kondisi (Baru/Bekas/Layak)") }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = ukuran, onValueChange = { ukuran = it }, label = { Text("Ukuran (S/M/L/XL)") }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = harga, onValueChange = { harga = it }, label = { Text("Harga (Rp)") }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = kategori, onValueChange = { kategori = it }, label = { Text("Kategori (Kemeja/Celana/Jaket)") }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = deskripsi, onValueChange = { deskripsi = it }, label = { Text("Deskripsi") }, modifier = Modifier.fillMaxWidth(), minLines = 3)
             }
 
             // FORM UNTUK DONATE & RECYCLE
             if (selectedJenis == "donate" || selectedJenis == "recycle") {
-                OutlinedTextField(
-                    value = nama,
-                    onValueChange = { nama = it },
-                    label = { Text("Nama Pakaian (opsional)") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                OutlinedTextField(
-                    value = kategori,
-                    onValueChange = { kategori = it },
-                    label = { Text("Kategori (opsional)") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
+                OutlinedTextField(value = nama, onValueChange = { nama = it }, label = { Text("Nama Pakaian (opsional)") }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = kategori, onValueChange = { kategori = it }, label = { Text("Kategori (opsional)") }, modifier = Modifier.fillMaxWidth())
                 Spacer(Modifier.height(8.dp))
-
                 Text("Lokasi Penjemputan:", style = MaterialTheme.typography.titleMedium)
-
-                Button(
-                    onClick = {
-                        if (ContextCompat.checkSelfPermission(
-                                context,
-                                Manifest.permission.ACCESS_FINE_LOCATION
-                            ) == PackageManager.PERMISSION_GRANTED
-                        ) {
-                            getLocation(context) { lat, lon ->
-                                latitude = lat
-                                longitude = lon
-                                lokasi = "Lokasi GPS: Lat $lat, Lon $lon"
-                            }
-                        } else {
-                            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                Button(onClick = {
+                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        getLocation(context) { lat, lon ->
+                            latitude = lat
+                            longitude = lon
+                            lokasi = "Lokasi GPS: Lat $lat, Lon $lon"
                         }
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Ambil Lokasi GPS")
-                }
-
-                if (lokasi.isNotEmpty()) {
-                    Text(lokasi, style = MaterialTheme.typography.bodySmall)
-                }
-
-                OutlinedTextField(
-                    value = deskripsi,
-                    onValueChange = { deskripsi = it },
-                    label = { Text("Catatan tambahan (opsional)") },
-                    modifier = Modifier.fillMaxWidth(),
-                    minLines = 2
-                )
+                    } else {
+                        locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                    }
+                }, modifier = Modifier.fillMaxWidth()) { Text("Ambil Lokasi GPS") }
+                if (lokasi.isNotEmpty()) Text(lokasi, style = MaterialTheme.typography.bodySmall)
+                OutlinedTextField(value = deskripsi, onValueChange = { deskripsi = it }, label = { Text("Catatan tambahan (opsional)") }, modifier = Modifier.fillMaxWidth(), minLines = 2)
             }
 
             Spacer(Modifier.height(16.dp))
 
             // TOMBOL SUBMIT
-            Button(
-                onClick = {
-                    val currentJenis = selectedJenis
-                    val currentImageUri = imageUri
-
-                    if (currentJenis != null && currentImageUri != null) {
-                        viewModel.uploadItem(
-                            nama = nama.ifEmpty { "Pakaian Bekas" },
-                            harga = if (currentJenis == "resell") harga.toDoubleOrNull() ?: 0.0 else 0.0,
-                            kategori = kategori.ifEmpty { "Umum" },
-                            deskripsi = deskripsi,
-                            lokasi = lokasi,
-                            jenis = currentJenis,
-                            kondisi = kondisi,
-                            ukuran = ukuran,
-                            lat = latitude,
-                            lon = longitude,
-                            imageUri = currentImageUri
-                        )
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = selectedJenis != null && imageUri != null
-            ) {
+            Button(onClick = {
+                val currentJenis = selectedJenis
+                val currentImageUri = imageUri
+                if (currentJenis != null && currentImageUri != null) {
+                    viewModel.uploadItem(
+                        nama = nama.ifEmpty { "Pakaian Bekas" },
+                        harga = if (currentJenis == "resell") harga.toDoubleOrNull() ?: 0.0 else 0.0,
+                        kategori = kategori.ifEmpty { "Umum" },
+                        deskripsi = deskripsi,
+                        lokasi = lokasi,
+                        jenis = currentJenis,
+                        kondisi = kondisi,
+                        ukuran = ukuran,
+                        lat = latitude,
+                        lon = longitude,
+                        imageUri = currentImageUri
+                    )
+                }
+            }, modifier = Modifier.fillMaxWidth(), enabled = selectedJenis != null && imageUri != null) {
                 Text(
                     when (selectedJenis) {
                         "resell" -> "Upload ke Marketplace"
@@ -302,32 +190,12 @@ fun AddItemScreen(
 
             // STATUS UPLOAD
             when (uploadState) {
-                is UploadState.Loading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-                }
+                is UploadState.Loading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                 is UploadState.Success -> {
-                    Text(
-                        "Berhasil! ${
-                            when (selectedJenis) {
-                                "resell" -> "Item tersedia di Marketplace"
-                                "donate" -> "Pickup akan dijadwalkan"
-                                "recycle" -> "Pickup akan dijadwalkan"
-                                else -> ""
-                            }
-                        }",
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    LaunchedEffect(Unit) {
-                        kotlinx.coroutines.delay(1500)
-                        onSuccess()
-                    }
+                    Text("Berhasil! ${if (selectedJenis == "resell") "Item tersedia di Marketplace" else "Pickup akan dijadwalkan"}", color = MaterialTheme.colorScheme.primary)
+                    LaunchedEffect(Unit) { kotlinx.coroutines.delay(1500); onSuccess() }
                 }
-                is UploadState.Error -> {
-                    Text(
-                        (uploadState as UploadState.Error).msg,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
+                is UploadState.Error -> Text((uploadState as UploadState.Error).msg, color = MaterialTheme.colorScheme.error)
                 else -> {}
             }
         }
@@ -341,24 +209,14 @@ fun createImageUri(context: Context): Uri {
         put(android.provider.MediaStore.Images.Media.DISPLAY_NAME, "restyle_${System.currentTimeMillis()}.jpg")
         put(android.provider.MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
     }
-    return contentResolver.insert(
-        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-        contentValues
-    ) ?: Uri.EMPTY
+    return contentResolver.insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues) ?: Uri.EMPTY
 }
 
 // Helper: Get GPS Location
 fun getLocation(context: Context, onResult: (Double, Double) -> Unit) {
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-
     try {
         fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
-            .addOnSuccessListener { location ->
-                if (location != null) {
-                    onResult(location.latitude, location.longitude)
-                }
-            }
-    } catch (e: SecurityException) {
-        // Handle exception
-    }
+            .addOnSuccessListener { location -> if (location != null) onResult(location.latitude, location.longitude) }
+    } catch (e: SecurityException) {}
 }

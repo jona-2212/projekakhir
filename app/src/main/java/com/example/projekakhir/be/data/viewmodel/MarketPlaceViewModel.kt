@@ -29,11 +29,17 @@ class MarketPlaceViewModel(
         viewModelScope.launch {
             _uiState.value = MarketplaceUiState.Loading
             val result = repository.getAllItems()
-            if (result.isSuccess) {
-                _uiState.value = MarketplaceUiState.Success(result.getOrDefault(emptyList()))
-            } else {
-                _uiState.value = MarketplaceUiState.Error("Gagal memuat data")
-            }
+            _uiState.value = if (result.isSuccess) MarketplaceUiState.Success(result.getOrDefault(emptyList()))
+            else MarketplaceUiState.Error("Gagal memuat data")
+        }
+    }
+
+    fun loadUserItems(userId: String) {
+        viewModelScope.launch {
+            _uiState.value = MarketplaceUiState.Loading
+            val result = repository.getUserItems(userId)
+            _uiState.value = if (result.isSuccess) MarketplaceUiState.Success(result.getOrDefault(emptyList()))
+            else MarketplaceUiState.Error("Gagal memuat riwayat")
         }
     }
 }

@@ -9,8 +9,8 @@ data class ItemModel(
     val harga: Double = 0.0,
     val deskripsi: String = "",
     val kategori: String = "",
-    val kondisi: String = "", // Tambah untuk Resell
-    val ukuran: String = "", // Tambah untuk Resell
+    val kondisi: String = "", // Untuk resell
+    val ukuran: String = "", // Untuk resell
     val imageUrl: String = "",
     val lokasiPickup: String = "",
     val createdAt: Timestamp = Timestamp.now(),

@@ -25,11 +25,8 @@ class AuthViewModel(
         viewModelScope.launch {
             _authState.value = AuthState.Loading
             val result = repository.loginWithGoogle(idToken)
-            if (result.isSuccess) {
-                _authState.value = AuthState.Success
-            } else {
-                _authState.value = AuthState.Error("Login Gagal")
-            }
+            _authState.value = if (result.isSuccess) AuthState.Success
+            else AuthState.Error("Login Gagal")
         }
     }
 

@@ -18,7 +18,6 @@ class AddItemRepository {
     suspend fun uploadImage(uri: Uri): String {
         val filename = "items/${UUID.randomUUID()}.jpg"
         val ref = storage.reference.child(filename)
-
         ref.putFile(uri).await()
         return ref.downloadUrl.await().toString()
     }
@@ -27,9 +26,7 @@ class AddItemRepository {
     suspend fun uploadItem(item: ItemModel): Result<Unit> {
         return try {
             val user = auth.currentUser ?: throw Exception("User belum login")
-
             val newItem = item.copy(userId = user.uid)
-
             db.collection("items").add(newItem).await()
             Result.success(Unit)
         } catch (e: Exception) {
