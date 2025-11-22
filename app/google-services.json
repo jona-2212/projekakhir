@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "730027626232",
+    "project_id": "projectakhir-bde2a",
+    "storage_bucket": "projectakhir-bde2a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730027626232:android:002f4a56dd1151a809350d",
+        "android_client_info": {
+          "package_name": "com.ProjekAkhir.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "730027626232-25etvct15bbt5fp7fuvscjr5ovtloig6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv41iGdlxdfjpq59EiBkltQpB6MISYJ_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "730027626232-25etvct15bbt5fp7fuvscjr5ovtloig6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730027626232:android:9373eb65a9181d2709350d",
+        "android_client_info": {
+          "package_name": "com.example.projekakhir"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "730027626232-25etvct15bbt5fp7fuvscjr5ovtloig6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv41iGdlxdfjpq59EiBkltQpB6MISYJ_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "730027626232-25etvct15bbt5fp7fuvscjr5ovtloig6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

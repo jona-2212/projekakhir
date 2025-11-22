@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ReStyle</string>
+    <string name="tagline">Karena setiap pakaian, layak mendapatkan kesempatan kedua</string>
+    <string name="resell">Resell</string>
+    <string name="donate">Donate</string>
+    <string name="recycle">Recycle</string>
+    <string name="marketplace">Marketplace</string>
+    <string name="history">History</string>
+    <string name="profile">Profile</string>
+</resources>
